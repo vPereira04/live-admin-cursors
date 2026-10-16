@@ -1,0 +1,58 @@
+name: Deploy to WordPress.org & GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*" # e.g. v1.0.0
+
+env:
+  PLUGIN_SLUG: live-admin-cursor # WP.org slug
+
+permissions:
+  contents: write # needed to create the GitHub Release
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Plugin header says "Requires PHP: 7.4", so lint against that.
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: none
+
+      - name: Lint PHP
+        run: php -l live-admin-cursor.php
+
+      - name: Check tag matches plugin version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' live-admin-cursor.php | awk '{print $NF}')
+          STABLE=$(grep -m1 -E '^Stable tag:' readme.txt | awk '{print $NF}')
+          echo "Tag: $TAG | Header: $HEADER | Stable tag: $STABLE"
+          if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$STABLE" ]; then
+            echo "::error::Tag v$TAG does not match plugin Version ($HEADER) / readme Stable tag ($STABLE)"
+            exit 1
+          fi
+
+      - name: Deploy to WordPress.org
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ env.PLUGIN_SLUG }}
+          ASSETS_DIR: .wordpress-org # banners, icons, screenshots -> SVN /assets
+
+      - name: Create GitHub Release with ZIP
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.deploy.outputs.zip-path }}
+          fail_on_unmatched_files: true

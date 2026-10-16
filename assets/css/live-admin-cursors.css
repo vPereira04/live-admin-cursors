@@ -1,0 +1,439 @@
+/* Live Admin Cursors */
+
+.lacu-layer {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.lacu-layer[hidden] {
+	display: none;
+}
+
+/* ---------- Cursor ---------- */
+
+.lacu-cursor {
+	--lacu-color: #2271b1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: opacity 0.25s ease;
+	will-change: transform;
+}
+
+/* Each icon is shifted so its hotspot sits exactly on the point. */
+.lacu-cursor__icon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	overflow: visible;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+	transform-origin: 0 0;
+	transition: transform 0.12s ease-out;
+}
+
+.lacu-cursor__icon path {
+	fill: var(--lacu-color);
+	stroke: #fff;
+	stroke-width: 1.5;
+	stroke-linejoin: round;
+}
+
+.lacu-cursor__icon--arrow {
+	width: 18px;
+	height: 22px;
+	margin: -1.5px 0 0 -2px;
+}
+
+.lacu-cursor__icon--pointer {
+	width: 20px;
+	height: 24px;
+	margin: -1px 0 0 -8.6px;
+}
+
+.lacu-cursor__icon--text {
+	width: 12px;
+	height: 22px;
+	margin: -11px 0 0 -6px;
+}
+
+.lacu-cursor:not(.lacu-cursor--pointer):not(.lacu-cursor--text) .lacu-cursor__icon--arrow,
+.lacu-cursor--pointer .lacu-cursor__icon--pointer,
+.lacu-cursor--text .lacu-cursor__icon--text {
+	display: block;
+}
+
+.lacu-cursor__label {
+	position: absolute;
+	top: 20px;
+	left: 12px;
+	display: inline-flex;
+	gap: 5px;
+	align-items: center;
+	max-width: 200px;
+	padding: 2px 8px 2px 3px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 18px;
+	color: #fff;
+	white-space: nowrap;
+	background: var(--lacu-color);
+	border-radius: 999px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+	transform-origin: 0 0;
+	transition: transform 0.15s ease-out;
+}
+
+.lacu-cursor--text .lacu-cursor__label {
+	top: 12px;
+	left: 8px;
+}
+
+.lacu-cursor__name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.lacu-cursor__avatar {
+	flex: none;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- States ---------- */
+
+.lacu-cursor--idle {
+	opacity: 0.5;
+}
+
+/* Their mouse left their window. */
+.lacu-cursor--away {
+	opacity: 0.3;
+}
+
+.lacu-cursor--away .lacu-cursor__label {
+	transform: scale(0.85);
+}
+
+/* Typing: bouncing dots in the tag, I-beam blinking. */
+.lacu-cursor__dots {
+	display: none;
+	gap: 2px;
+	align-items: center;
+	padding-left: 2px;
+}
+
+.lacu-cursor__dots i {
+	width: 4px;
+	height: 4px;
+	background: #fff;
+	border-radius: 50%;
+	animation: lacu-dot 0.9s ease-in-out infinite;
+}
+
+.lacu-cursor__dots i:nth-child(2) {
+	animation-delay: 0.15s;
+}
+
+.lacu-cursor__dots i:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.lacu-cursor--typing .lacu-cursor__dots {
+	display: inline-flex;
+}
+
+.lacu-cursor--typing .lacu-cursor__icon--text {
+	animation: lacu-blink 1s steps(1) infinite;
+}
+
+.lacu-cursor--key .lacu-cursor__label {
+	transform: translateY(-2px) scale(1.06);
+}
+
+/* Click: the icon squishes and a burst goes off under it. */
+.lacu-cursor--click .lacu-cursor__icon {
+	transform: scale(0.78);
+}
+
+.lacu-burst {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+}
+
+.lacu-burst::before {
+	position: absolute;
+	top: -16px;
+	left: -16px;
+	width: 32px;
+	height: 32px;
+	content: "";
+	border: 3px solid var(--lacu-color);
+	border-radius: 50%;
+	animation: lacu-ring 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.lacu-burst i {
+	position: absolute;
+	top: -3px;
+	left: -3px;
+	width: 6px;
+	height: 6px;
+	background: var(--lacu-color);
+	border-radius: 50%;
+	animation: lacu-spark 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+/* Jumped to from the toolbar. */
+.lacu-cursor--ping .lacu-cursor__label {
+	animation: lacu-ping 0.5s ease-out 3;
+}
+
+/* ---------- Off-screen: tag pinned to the edge ---------- */
+
+.lacu-cursor__edge {
+	display: none;
+}
+
+.lacu-cursor--edge {
+	opacity: 1;
+}
+
+.lacu-cursor--edge .lacu-cursor__icon {
+	display: none !important;
+}
+
+.lacu-cursor--edge .lacu-cursor__label {
+	top: 0;
+	left: 0;
+	padding-left: 6px;
+	cursor: pointer;
+	pointer-events: auto;
+	transform: translateX(-50%);
+}
+
+.lacu-cursor--edge .lacu-cursor__edge {
+	display: block;
+	width: 0;
+	height: 0;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+}
+
+.lacu-cursor--edge-up .lacu-cursor__edge {
+	border-bottom: 7px solid #fff;
+}
+
+.lacu-cursor--edge-down .lacu-cursor__edge {
+	border-top: 7px solid #fff;
+}
+
+.lacu-cursor--edge-up .lacu-cursor__label {
+	animation: lacu-nudge-up 1.6s ease-in-out infinite;
+}
+
+.lacu-cursor--edge-down .lacu-cursor__label {
+	animation: lacu-nudge-down 1.6s ease-in-out infinite;
+}
+
+/* ---------- The field someone's typing in ---------- */
+
+.lacu-focus {
+	outline: 2px solid var(--lacu-color) !important;
+	outline-offset: 1px;
+	box-shadow: 0 0 0 5px color-mix(in srgb, var(--lacu-color) 22%, transparent) !important;
+	transition: box-shadow 0.2s ease;
+}
+
+.lacu-focus--key {
+	box-shadow: 0 0 0 7px color-mix(in srgb, var(--lacu-color) 32%, transparent) !important;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes lacu-ring {
+
+	from {
+		opacity: 1;
+		transform: scale(0.15);
+	}
+
+	to {
+		opacity: 0;
+		transform: scale(1.3);
+	}
+}
+
+@keyframes lacu-spark {
+
+	from {
+		opacity: 1;
+		transform: rotate(var(--lacu-angle)) translateX(0) scale(1);
+	}
+
+	to {
+		opacity: 0;
+		transform: rotate(var(--lacu-angle)) translateX(22px) scale(0.4);
+	}
+}
+
+@keyframes lacu-dot {
+
+	0%,
+	60%,
+	100% {
+		opacity: 0.5;
+		transform: translateY(0);
+	}
+
+	30% {
+		opacity: 1;
+		transform: translateY(-3px);
+	}
+}
+
+@keyframes lacu-blink {
+
+	50% {
+		opacity: 0.6;
+	}
+}
+
+@keyframes lacu-ping {
+
+	50% {
+		transform: scale(1.25);
+	}
+}
+
+@keyframes lacu-nudge-up {
+
+	50% {
+		transform: translate(-50%, -3px);
+	}
+}
+
+@keyframes lacu-nudge-down {
+
+	50% {
+		transform: translate(-50%, 3px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.lacu-cursor__dots i,
+	.lacu-cursor--typing .lacu-cursor__icon--text,
+	.lacu-cursor--edge-up .lacu-cursor__label,
+	.lacu-cursor--edge-down .lacu-cursor__label,
+	.lacu-cursor--ping .lacu-cursor__label {
+		animation: none;
+	}
+
+	.lacu-burst::before,
+	.lacu-burst i {
+		animation-duration: 0.01s;
+	}
+}
+
+/* ---------- Toolbar ---------- */
+
+#wpadminbar #wp-admin-bar-lacu-presence > .ab-item {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+#wpadminbar #wp-admin-bar-lacu-presence .ab-icon {
+	margin-right: 0;
+}
+
+#wpadminbar #wp-admin-bar-lacu-presence .ab-icon::before {
+	top: 2px;
+	content: "\f307";
+}
+
+#wpadminbar .lacu-bar--alone .ab-icon::before,
+#wpadminbar .lacu-bar--alone .lacu-bar__count {
+	opacity: 0.5;
+}
+
+#wpadminbar .lacu-bar--ghost .ab-icon::before {
+	content: "\f530";
+}
+
+#wpadminbar .lacu-bar__faces {
+	display: inline-flex;
+}
+
+#wpadminbar .lacu-bar__faces:empty {
+	display: none;
+}
+
+#wpadminbar .lacu-bar__face {
+	width: 18px;
+	height: 18px;
+	margin-left: -5px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px var(--lacu-color);
+}
+
+#wpadminbar .lacu-bar__face:first-child {
+	margin-left: 0;
+}
+
+#wpadminbar #wp-admin-bar-lacu-presence .ab-submenu {
+	min-width: 260px;
+}
+
+#wpadminbar #wp-admin-bar-lacu-presence .ab-submenu .ab-item {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+#wpadminbar .lacu-bar__avatar {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px var(--lacu-color);
+}
+
+#wpadminbar .lacu-bar__name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#wpadminbar .lacu-bar__meta {
+	max-width: 160px;
+	margin-left: auto;
+	overflow: hidden;
+	color: #a7aaad;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#wpadminbar .lacu-bar__heading .ab-item {
+	margin-top: 4px;
+	font-size: 11px;
+	color: #a7aaad;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+#wpadminbar .lacu-bar__toggle:first-of-type,
+#wpadminbar li:not(.lacu-bar__toggle) + .lacu-bar__toggle {
+	margin-top: 6px;
+	border-top: 1px solid rgba(255, 255, 255, 0.12);
+}

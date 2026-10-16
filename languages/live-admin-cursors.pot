@@ -1,0 +1,110 @@
+# Copyright (C) 2026 Victor Pereira
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Live Admin Cursors 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/live-admin-cursors\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-16T14:59:14+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: live-admin-cursors\n"
+
+#. Plugin Name of the plugin
+#: live-admin-cursors.php
+#: includes/class-lacu-admin.php:100
+#: includes/class-lacu-settings.php:101
+#: includes/class-lacu-settings.php:102
+msgid "Live Admin Cursors"
+msgstr ""
+
+#. Description of the plugin
+#: live-admin-cursors.php
+msgid "See each other's mouse cursors moving around wp-admin in real time when you're on the same screen. Pick which roles have a cursor and which roles see them."
+msgstr ""
+
+#. Author of the plugin
+#: live-admin-cursors.php
+msgid "Victor Pereira"
+msgstr ""
+
+#: includes/class-lacu-admin.php:68
+msgid "On this page"
+msgstr ""
+
+#: includes/class-lacu-admin.php:69
+msgid "Elsewhere in wp-admin"
+msgstr ""
+
+#: includes/class-lacu-admin.php:70
+#: includes/class-lacu-admin.php:110
+msgid "Nobody else is around"
+msgstr ""
+
+#: includes/class-lacu-admin.php:71
+msgid "idle"
+msgstr ""
+
+#: includes/class-lacu-admin.php:72
+msgid "Hide my cursor"
+msgstr ""
+
+#: includes/class-lacu-admin.php:73
+msgid "Show my cursor"
+msgstr ""
+
+#: includes/class-lacu-admin.php:74
+msgid "Hide other cursors"
+msgstr ""
+
+#: includes/class-lacu-admin.php:75
+msgid "Show other cursors"
+msgstr ""
+
+#: includes/class-lacu-settings.php:125
+msgid "Roles"
+msgstr ""
+
+#: includes/class-lacu-settings.php:132
+msgid "Who takes part"
+msgstr ""
+
+#: includes/class-lacu-settings.php:169
+msgid "Settings"
+msgstr ""
+
+#: includes/class-lacu-settings.php:200
+msgid "Cursors only show between people on the same wp-admin screen. Anyone who sees cursors can hide other people's cursors from the toolbar, and can hide their own if their role has a cursor."
+msgstr ""
+
+#: includes/class-lacu-settings.php:213
+msgid "Role"
+msgstr ""
+
+#: includes/class-lacu-settings.php:214
+msgid "Has a cursor"
+msgstr ""
+
+#: includes/class-lacu-settings.php:215
+msgid "Sees cursors"
+msgstr ""
+
+#. translators: %s: role name.
+#: includes/class-lacu-settings.php:228
+#, php-format
+msgid "%s has a cursor"
+msgstr ""
+
+#. translators: %s: role name.
+#: includes/class-lacu-settings.php:239
+#, php-format
+msgid "%s sees cursors"
+msgstr ""
+
+#: includes/class-lacu-settings.php:249
+msgid "\"Has a cursor\": people with this role show up for others. \"Sees cursors\": people with this role see everyone else's cursors and get the toolbar menu."
+msgstr ""
