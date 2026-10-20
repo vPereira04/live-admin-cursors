@@ -6,7 +6,7 @@ on:
       - "v*" # e.g. v1.0.0
 
 env:
-  PLUGIN_SLUG: live-admin-cursor # WP.org slug
+  PLUGIN_SLUG: live-admin-cursors # WP.org slug
 
 permissions:
   contents: write # needed to create the GitHub Release
@@ -27,12 +27,12 @@ jobs:
           tools: none
 
       - name: Lint PHP
-        run: php -l live-admin-cursor.php
+        run: php -l live-admin-cursors.php
 
       - name: Check tag matches plugin version
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' live-admin-cursor.php | awk '{print $NF}')
+          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' live-admin-cursors.php | awk '{print $NF}')
           STABLE=$(grep -m1 -E '^Stable tag:' readme.txt | awk '{print $NF}')
           echo "Tag: $TAG | Header: $HEADER | Stable tag: $STABLE"
           if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$STABLE" ]; then
